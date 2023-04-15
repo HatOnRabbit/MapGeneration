@@ -1,0 +1,98 @@
+import random
+import tkinter as tk #Gives color map
+
+#Get the Peaks from the input
+size = int(input("Size: "))
+peaks = int(input("Peaks: "))
+print(peaks)
+
+#Returns random number
+def RandomizePeak():
+    return random.randint(0, size - 1)
+
+#map initialization
+map = [[0 for x in range(size)] for y in range(size)] 
+
+#Peaks list 
+peaksList = []
+
+#randomize peaks list
+for i in range(peaks):
+    peaksList.append(RandomizePeak())
+    peaksList.append(RandomizePeak())
+
+print(peaksList)
+
+#prints out the coords for the 9's
+#for i in range(0, len(peaksList), 2):
+#    print(peaksList[i], ", ", peaksList[i + 1])
+
+#Adds the 9's into the 2D array
+for i in range(0, len(peaksList), 2):
+    #print(peaksList[i], ", ", peaksList[i + 1]) #Prints coords
+    map[peaksList[i]][peaksList[i + 1]] = 9
+
+for i in range(9, 0, -1): #goes through the levels
+    #print("Range: ", i)
+    for x in range(0, size):
+        for y in range(0, size):
+         #goes through the 2D array
+            if map[x][y] == i:
+                if x + 1 < size:
+                    if map[x + 1][y] < i + 1:
+                        map[x + 1][y] = i - random.randint(1,2)
+                if 0 < x:
+                    if map[x - 1][y] < i + 1:
+                        map[x - 1][y] = i - random.randint(1,2)
+                if 0 < y:
+                    if map[x][y - 1] < i + 1:
+                        map[x][y - 1] = i - random.randint(1,2)
+                if y + 1 < size:
+                    if map[x][y + 1] < i + 1:
+                        map[x][y + 1] = i - random.randint(1,2)
+
+for x in range(size):
+    for y in range(size):
+        if map[x][y] != 0:
+            print(map[x][y], end = " ")
+        else:
+            print(" ", end = " ")
+    print()
+
+#printing onto tkinter
+root = tk.Tk()
+root.geometry("500x500")
+root.title("Map Generation")
+
+tkInterMap = [[tk.Label(root, text="", bg='#000', fg='#ff0', padx = 15, pady = 5) for x in range(size)] for y in range(size)] 
+
+for x in range(size):
+    for y in range(size):
+        if map[x][y] == -1:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#a4beff', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 0:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#2986cc', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 1:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#fff2cc', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 2:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#fff2ac', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 3:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#97a1aa', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 4:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#00c265', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 5:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#6aa84f', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 6:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#00a958', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 7:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#38761d', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 8:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#93c47d', fg='#ff0', padx = 15, pady = 5)
+        if map[x][y] == 9:
+            tkInterMap[x][y] = tk.Label(root, text="", bg='#d6ffc3', fg='#ff0', padx = 15, pady = 5)
+
+for x in range(size):
+    for y in range(size):
+        tkInterMap[x][y].grid(row = x,column = y)
+
+root.mainloop()
